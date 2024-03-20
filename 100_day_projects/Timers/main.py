@@ -2,7 +2,9 @@ import time
 import datetime
 import bisect
 
-
+start_time = time.time()
+lap_number = 1
+user_choice = ""
 
 def binary_search(the_list, element):
     i = bisect.bisect_left(the_list, element)
@@ -25,56 +27,61 @@ def countdown(hour, minute, second):
     
     print("DONE, The countdown is at zero seconds!")
 
-def lap_timer(value):
+def lap_timer(value ,lap):
     while value.lower() != "q":
         value = input()
 
-        start_time = time.time()
+        
         last_time = start_time
-        lap_number = 1
+        
 
         lap_time   = round((time.time() - last_time), 2)
         total_time = round((time.time() - start_time), 2)
 
-        print("Lap No. "     + str(lap_number))
+        print("Lap No. "     + str(lap))
         print("Total Time: " + str(total_time))
         print("Lap Time: "   + str(lap_time))
 
         print("*" * 20)
 
         last_time = time.time()
-        lap_number += 1
+        lap += 1
 
     print("Done")
 
-print("Welcome to the program timers, were limited to 3 timers at the moment.")
-print("please choose one")
-print("1. Random number search task for computer")
-print("2. Countdown timer")
-print("3. Stopwatch")
 
-user_choice = input()
+while user_choice != "4":
+    print("Welcome to the program timers, were limited to 3 timers at the moment.")
+    print("please choose one")
+    print("1. Random number search task for computer")
+    print("2. Countdown timer")
+    print("3. Stopwatch")
+    print("4. EXIT")
 
-if user_choice == "2":
-    hour   = input("Enter the time in hours: ")
-    minute = input("Enter the time in minute: ")
-    second = input("Enter the time in second: ")
-    
-    countdown(int(hour), int(minute), int(second))
+    user_choice = input()
 
-elif user_choice == "1":
-    print("Press ENTER for each lap. \nAnd Type Q with ENTER to stop the timer.")
-    
-    lap_timer(user_choice)
+    if user_choice == "2":
+        hour   = input("Enter the time in hours: ")
+        minute = input("Enter the time in minute: ")
+        second = input("Enter the time in second: ")
+        
+        countdown(int(hour), int(minute), int(second))
 
-elif user_choice == "3":
-    our_list = list(range(10000000))
-    element  = 7000000
+    elif user_choice == "3":
+        print("Press ENTER for each lap. \nAnd Type Q with ENTER to stop the timer.")
+        
+        lap_timer(user_choice, lap_number)
 
-    start = time.time()
-    
-    binary_search(our_list, element)
+    elif user_choice == "1":
+        our_list = list(range(10000000))
+        element  = 7000000
 
-    end = time.time()
+        start = time.time()
+        
+        binary_search(our_list, element)
 
-    print(end - start)
+        end = time.time()
+
+        print(f"It took the computer {end - start} seconds to find the element using binary search.")
+
+print("Good-Bye.")
