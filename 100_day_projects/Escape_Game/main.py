@@ -1,7 +1,13 @@
+#HOW TO IMPROVE:
+# - Add multiple player lives
+# - when a player dies, ask if they want to keep going
+
 from art import *
 import random
 import sys
 
+print()
+print(rules)
 print()
 startGame = input("Would you like to play Escape? Type 'yes' or 'exit'\n").lower()
 
@@ -15,15 +21,9 @@ player_position_x = 0
 player_position_y = 0
 matrix[player_position_y][player_position_x] = happy_face
 
-goal_position_x = 9
-goal_position_y = 9
+goal_position_x = random.randrange(0,10)
+goal_position_y = random.randrange(0,10)
 matrix[goal_position_x][goal_position_y] = goal
-
-# #Randomizes enemy positions (for three enemies)
-# enemy_position_x = random.randrange(0,10)
-# enemy_position_y = random.randrange(0,10)
-# enemy_position_z = random.randrange(0,10)
-# matrix[enemy_position_y][enemy_position_z] = random.choice(enemies_list)
 
 #Functions that move the player
 def right(move_right):
@@ -38,8 +38,6 @@ def up(move_up):
 def down(move_down):
     return 1 + move_down
 
-# movement = [right(enemy_position_y), left(enemy_position_y), up(enemy_position_z), down(enemy_position_z)]
-
 if startGame == "exit":
     print()
     print("Good-Bye.")
@@ -47,9 +45,16 @@ if startGame == "exit":
     sys.exit()
 
 while startGame == "yes":
-    enemy_position_y = random.randrange(0,10)
-    enemy_position_z = random.randrange(0,10)
+    #Randomizes enemy positions (for three enemies)
+    enemy_position_x = random.randrange(0,5)
+    enemy_position_y = random.randrange(0,5)
+    enemy_position_z = random.randrange(0,5)
     matrix[enemy_position_y][enemy_position_z] = random.choice(enemies_list)
+    matrix[enemy_position_y][enemy_position_x] = random.choice(enemies_list)
+    matrix[enemy_position_x][enemy_position_z] = random.choice(enemies_list)
+
+    #Changes player's position
+    matrix[player_position_y][player_position_x] = happy_face
 
     #Prints Grid
     print()
@@ -63,6 +68,10 @@ while startGame == "yes":
     #Erases enemy's previous position
     matrix[enemy_position_y].pop(enemy_position_z)
     matrix[enemy_position_y].insert(enemy_position_z, placeHolder)
+    matrix[enemy_position_y].pop(enemy_position_x)
+    matrix[enemy_position_y].insert(enemy_position_x, placeHolder)
+    matrix[enemy_position_x].pop(enemy_position_z)
+    matrix[enemy_position_x].insert(enemy_position_z, placeHolder)
 
     #Player's decision on where to move
     player_movement = input("Where would you like to move?\n").lower()
@@ -80,7 +89,42 @@ while startGame == "yes":
         break
 
     #If player matches same position as enemy, they lose
-    if  matrix[enemy_position_y][enemy_position_z] == matrix[player_position_y][player_position_x]:
+    if enemy_position_y == player_position_y and enemy_position_z == player_position_x:
+        matrix[player_position_y][player_position_x] = dead
+        print()
+        print(*matrix, sep = "\n")
+        print()
+        print("YOU DIED.")
+        break
+    elif enemy_position_z == player_position_y and enemy_position_y == player_position_x:
+        matrix[player_position_y][player_position_x] = dead
+        print()
+        print(*matrix, sep = "\n")
+        print()
+        print("YOU DIED.")
+        break
+    elif enemy_position_y == player_position_y and enemy_position_x == player_position_x:
+        matrix[player_position_y][player_position_x] = dead
+        print()
+        print(*matrix, sep = "\n")
+        print()
+        print("YOU DIED.")
+        break
+    elif enemy_position_x == player_position_y and enemy_position_y == player_position_x:
+        matrix[player_position_y][player_position_x] = dead
+        print()
+        print(*matrix, sep = "\n")
+        print()
+        print("YOU DIED.")
+        break
+    elif enemy_position_z == player_position_y and enemy_position_x == player_position_x:
+        matrix[player_position_y][player_position_x] = dead
+        print()
+        print(*matrix, sep = "\n")
+        print()
+        print("YOU DIED.")
+        break
+    elif enemy_position_x == player_position_y and enemy_position_z == player_position_x:
         matrix[player_position_y][player_position_x] = dead
         print()
         print(*matrix, sep = "\n")
@@ -95,8 +139,16 @@ while startGame == "yes":
         print(*matrix, sep = "\n")
         print()
         print("YOU WON!")
-        break
+        print()
+        keep_going = input("Would you like to keep playing? Type 'yes' to keep playing or 'no' to quit.\n").lower()
 
-    #Changes enemy's and player's positions
-    matrix[player_position_y][player_position_x] = happy_face
-    matrix[goal_position_x][goal_position_y] = goal
+        #Resets the game
+        if keep_going == "yes":
+            startGame = keep_going
+            goal_position_x = random.randrange(0,10)
+            goal_position_y = random.randrange(0,10)
+            matrix[goal_position_x][goal_position_y] = goal
+        else:
+            break
+
+    
