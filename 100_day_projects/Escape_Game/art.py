@@ -5,4 +5,5 @@ happy_face   = "😄"
 placeHolder  = "⬛"
 goal         = "🟩"
 dead         = "💀"
+party_face   = "\U0001F973"
 enemies_list = [mad_face, ghost, devil]

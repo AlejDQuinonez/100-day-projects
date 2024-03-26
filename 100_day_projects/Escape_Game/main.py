@@ -19,11 +19,11 @@ goal_position_x = 9
 goal_position_y = 9
 matrix[goal_position_x][goal_position_y] = goal
 
-#Randomizes enemy positions (for three enemies)
-enemy_position_x = random.randrange(0,10)
-enemy_position_y = random.randrange(0,10)
-enemy_position_z = random.randrange(0,10)
-matrix[enemy_position_y][enemy_position_z] = random.choice(enemies_list)
+# #Randomizes enemy positions (for three enemies)
+# enemy_position_x = random.randrange(0,10)
+# enemy_position_y = random.randrange(0,10)
+# enemy_position_z = random.randrange(0,10)
+# matrix[enemy_position_y][enemy_position_z] = random.choice(enemies_list)
 
 #Functions that move the player
 def right(move_right):
@@ -38,6 +38,8 @@ def up(move_up):
 def down(move_down):
     return 1 + move_down
 
+# movement = [right(enemy_position_y), left(enemy_position_y), up(enemy_position_z), down(enemy_position_z)]
+
 if startGame == "exit":
     print()
     print("Good-Bye.")
@@ -45,6 +47,10 @@ if startGame == "exit":
     sys.exit()
 
 while startGame == "yes":
+    enemy_position_y = random.randrange(0,10)
+    enemy_position_z = random.randrange(0,10)
+    matrix[enemy_position_y][enemy_position_z] = random.choice(enemies_list)
+
     #Prints Grid
     print()
     print(*matrix, sep = "\n")
@@ -53,6 +59,10 @@ while startGame == "yes":
     #Erases player's previous position
     matrix[player_position_y].pop(player_position_x)
     matrix[player_position_y].insert(player_position_x, placeHolder)
+
+    #Erases enemy's previous position
+    matrix[enemy_position_y].pop(enemy_position_z)
+    matrix[enemy_position_y].insert(enemy_position_z, placeHolder)
 
     #Player's decision on where to move
     player_movement = input("Where would you like to move?\n").lower()
@@ -69,19 +79,24 @@ while startGame == "yes":
         print("Quitter.")
         break
 
-    
-
     #If player matches same position as enemy, they lose
-    if player_position_x == enemy_position_y and player_position_y == enemy_position_z:
-        matrix[enemy_position_y][enemy_position_z] = dead
-        print()
-        print("YOU DIED.")
+    if  matrix[enemy_position_y][enemy_position_z] == matrix[player_position_y][player_position_x]:
+        matrix[player_position_y][player_position_x] = dead
         print()
         print(*matrix, sep = "\n")
         print()
+        print("YOU DIED.")
         break
-    
+
+    #If player matches the green sqaure they win
+    if matrix[goal_position_x][goal_position_y] == matrix[player_position_y][player_position_x]:
+        matrix[goal_position_x][goal_position_y] = party_face
+        print()
+        print(*matrix, sep = "\n")
+        print()
+        print("YOU WON!")
+        break
+
     #Changes enemy's and player's positions
-    matrix[enemy_position_y][enemy_position_z] = random.choice(enemies_list)
     matrix[player_position_y][player_position_x] = happy_face
     matrix[goal_position_x][goal_position_y] = goal
