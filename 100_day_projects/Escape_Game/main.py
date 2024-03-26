@@ -3,7 +3,7 @@ import random
 import sys
 
 print()
-startGame = input("Would you like to play Escape?\n").lower()
+startGame = input("Would you like to play Escape? Type 'yes' or 'exit'\n").lower()
 
 #Creates the size of the Grid
 width = 10
@@ -41,11 +41,12 @@ def down(move_down):
 if startGame == "exit":
     print()
     print("Good-Bye.")
-    sys,exit()
-
-while startGame == "y":
     print()
+    sys.exit()
+
+while startGame == "yes":
     #Prints Grid
+    print()
     print(*matrix, sep = "\n")
     print()
 
@@ -68,22 +69,19 @@ while startGame == "y":
         print("Quitter.")
         break
 
+    
+
     #If player matches same position as enemy, they lose
     if player_position_x == enemy_position_y and player_position_y == enemy_position_z:
-        matrix[player_position_x][player_position_y] = dead
+        matrix[enemy_position_y][enemy_position_z] = dead
         print()
         print("YOU DIED.")
         print()
         print(*matrix, sep = "\n")
         print()
         break
-
+    
     #Changes enemy's and player's positions
     matrix[enemy_position_y][enemy_position_z] = random.choice(enemies_list)
     matrix[player_position_y][player_position_x] = happy_face
     matrix[goal_position_x][goal_position_y] = goal
-
-    print()
-    print(*matrix, sep = "\n")
-    print()
-    
